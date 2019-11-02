@@ -27,20 +27,16 @@
       <item>
         Apetece-me<tag>out="TRIANGLE"</tag>
       </item>
-
-      <item>
-        rectangulo<tag>out="rectangle"</tag>
-      </item>
     </one-of>
   </rule>
 	<rule id="restaurants">
 	  <one-of>
-		<item>McDonald's<tag>out="mcdonalds"</tag></item>
+		<item>McDonald's<tag>out="MCDONALDS"</tag></item>
       <item>
-        100 montaditos<tag>out="CIRCLE"</tag>
+        100 montaditos<tag>out="MONTADITOS"</tag>
       </item>
       <item>
-        pizza hut<tag>out="CIRCLE"</tag>
+        pizza hut<tag>out="PIZZAHUT"</tag>
       </item>
 	  </one-of>
 	</rule>
@@ -50,7 +46,7 @@
         Fórum Aveiro<tag>out="forum"</tag>
       </item>
       <item>
-        <tag>out="forum"</tag>
+        <tag>out="none"</tag>
       </item>
 	  </one-of>
 	</rule>
