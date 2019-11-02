@@ -7,7 +7,9 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using mmisharp;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace AppGui
 {
@@ -20,7 +22,7 @@ namespace AppGui
         private GoogleSearchEngineUsingChrome sel;
         public MainWindow()
         {
-            InitializeComponent();
+            //InitializeComponent();
 
 
             mmiC = new MmiCommunication("localhost",8000, "User1", "GUI");
@@ -73,6 +75,8 @@ namespace AppGui
 
         public class GoogleSearchEngineUsingChrome
         {
+            public TimeSpan MyDefaultTimeout { get; private set; }
+
             public void Shoud_Search_Using_Chrome()
             {
                 // Initialize the Chrome Driver
@@ -82,22 +86,53 @@ namespace AppGui
                     driver.Manage().Window.Maximize();
 
                     // 2. Go to the "Google" homepage
-                    driver.Navigate().GoToUrl("http://www.google.com");
+                    driver.Navigate().GoToUrl("https://www.ubereats.com/pt-PT/feed/?pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkRFVEklMjAtJTIwRGVwYXJ0YW1lbnRvJTIwZGUlMjBFbGVjdHIlQzMlQjNuaWNhJTJDJTIwVGVsZWNvbXVuaWNhJUMzJUE3JUMzJUI1ZXMlMjBlJTIwSW5mb3JtJUMzJUExdGljYSUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMkNoSUpzVjdhcjZxaUl3MFJidHRlelhxZVI3YyUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJnb29nbGVfcGxhY2VzJTIyJTJDJTIybGF0aXR1ZGUlMjIlM0E0MC42MzMxNzMxMDAwMDAwMSUyQyUyMmxvbmdpdHVkZSUyMiUzQS04LjY1OTQ5MzMlN0Q%3D");
+
 
                     // 3. Find the search textbox (by ID) on the homepage
-                    var searchBox = driver.FindElementByCssSelector("input[class='gLFyf gsfi']");
 
-                    // 4. Enter the text (to search for) in the textbox
-                    searchBox.SendKeys("Automation using selenium 3.0 in C#");
 
-                    // 5. Find the search button (by Name) on the homepage
-                    var searchButton = driver.FindElementByName("btnK");
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                    wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[class='ao aq b2']")));
 
+
+                    driver.FindElement(By.CssSelector("button[class='ao aq b2']")).Click(); //By.CssSelector("button[class='ao aq b2]'"));
+                                                                         //driver.FindElementByCssSelector("button.ao.aq.b2");
+                                                                         //searchBox.Click();
+                                                                         //searchBox.SendKeys(Keys.Enter);
+                    
+                    wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+                    wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("#search-suggestions-input")));
+
+                    var searchBox = driver.FindElement(By.CssSelector("#search-suggestions-input"));
+                    searchBox.SendKeys("mcdonalds universidade");
+                    searchBox.SendKeys(Keys.Enter);
+
+                    /*
+
+                    new WebDriverWait(driver, MyDefaultTimeout).Until(
+                    d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
+
+
+                    searchBox.SendKeys("DETI");
+
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+                    wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("location-enter-address-item-0")));
+
+                    searchBox.SendKeys(Keys.Enter);
+                    */
+
+                    //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+                    //wait.Until(ExpectedConditions.ElementToBeClickable(By.Id("location-enter-address-item-0")));
+
+                    //IWebElement deti = driver.FindElementByCssSelector("button[type='submit']");
+                    //deti.Click();
                     // 6. Click "Submit" to start the search
-                    searchButton.Submit();
+                    //searchBox.SendKeys(Keys.Enter);
 
                     // 7. Find the "Id" of the "Div" containing results stats
-                    var searchResults = driver.FindElementById("resultStats");
+                    //var searchResults = driver.FindElementById("resultStats");
+                    while (true) ;
                 }
             }
         }
