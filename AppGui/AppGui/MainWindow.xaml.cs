@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using Microsoft.Speech.Synthesis;
+using multimodal;
 
 namespace AppGui
 {
@@ -21,24 +23,28 @@ namespace AppGui
     {
         private MmiCommunication mmiC;
         private GoogleSearchEngineUsingChrome sel;
+
         public MainWindow()
         {
             //InitializeComponent();
+            Tts t = new Tts();
 
+            t.Speak("olá, tudo");
 
             mmiC = new MmiCommunication("localhost",8000, "User1", "GUI");
             mmiC.Message += MmiC_Message;
 
             mmiC.Start();
 
-            sel = new GoogleSearchEngineUsingChrome();
-            sel.Shoud_Search_Using_Chrome();
+            //sel = new GoogleSearchEngineUsingChrome();
+            //sel.Shoud_Search_Using_Chrome();
 
 
         }
 
         private void MmiC_Message(object sender, MmiEventArgs e)
         {
+
             Console.WriteLine(e.Message);
             var doc = XDocument.Parse(e.Message);
             Console.WriteLine("doc:::::::::::");

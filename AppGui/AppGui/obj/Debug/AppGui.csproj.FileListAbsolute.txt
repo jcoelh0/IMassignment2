@@ -116,3 +116,4 @@ C:\Users\jcoel\Desktop\IM\IMassignment2\AppGui\AppGui\obj\Debug\AppGui.csproj.Co
 C:\Users\jcoel\Desktop\IM\IMassignment2\AppGui\AppGui\obj\Debug\AppGui.csproj.CopyComplete
 C:\Users\jcoel\Desktop\IM\IMassignment2\AppGui\AppGui\obj\Debug\AppGui.exe
 C:\Users\jcoel\Desktop\IM\IMassignment2\AppGui\AppGui\obj\Debug\AppGui.pdb
+C:\Users\jcoel\Desktop\IM\IMassignment2\AppGui\AppGui\bin\Debug\Microsoft.Speech.dll
