@@ -1,34 +1,56 @@
 ﻿<?xml version="1.0"?>
 <grammar xml:lang="pt-PT" version="1.0" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
-	<rule id="rootRule" scope="public">
-	  <item>
-		  <item>
-			<ruleref uri="#object"/>
-			<tag>out.shape=rules.latest();</tag>
-		  </item>
-		  <item>
-			<ruleref uri="#color"/>
-			<tag>out.color=rules.latest();</tag>
-		  </item>
-	  </item>
-	</rule>
-	<rule id="object">
-	  <one-of>
-		<item>quadrado<tag>out="SQUARE"</tag></item>
-		<item>círculo<tag>out="CIRCLE"</tag></item>
-		<item>triângulo<tag>out="TRIANGLE"</tag></item>
+  <rule id="rootRule" scope="public">
+    <item>
+      <item>
+        <ruleref uri="#actions"/>
+        <tag>out.shape=rules.latest();</tag>
+      </item>
+      <item>
+        <ruleref uri="#restaurants"/>
+        <tag>out.color=rules.latest();</tag>
+      </item>
+      <item>
+        <ruleref uri="#places"/>
+        <tag>out.place=rules.latest();</tag>
+      </item>
+    </item>
+  </rule>
+  <rule id="actions">
+    <one-of>
+      <item>
+        Quero encomendar<tag>out="SQUARE"</tag>
+      </item>
+      <item>
+        Desejo<tag>out="CIRCLE"</tag>
+      </item>
+      <item>
+        Apetece-me<tag>out="TRIANGLE"</tag>
+      </item>
 
       <item>
         rectangulo<tag>out="rectangle"</tag>
       </item>
+    </one-of>
+  </rule>
+	<rule id="restaurants">
+	  <one-of>
+		<item>McDonald's<tag>out="mcdonalds"</tag></item>
+      <item>
+        100 montaditos<tag>out="CIRCLE"</tag>
+      </item>
+      <item>
+        pizza hut<tag>out="CIRCLE"</tag>
+      </item>
 	  </one-of>
 	</rule>
-	<rule id="color">
-	  <one-of>
-		<item>verde<tag>out="GREEN"</tag></item>
-		<item>azul<tag>out="BLUE"</tag></item>
+	<rule id="places">
+    <one-of>
       <item>
-        vermelho<tag>out="RED"</tag>
+        Fórum Aveiro<tag>out="forum"</tag>
+      </item>
+      <item>
+        <tag>out="forum"</tag>
       </item>
 	  </one-of>
 	</rule>
