@@ -353,10 +353,11 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
-AppGui/.vs/
-AppGui/AppGui/bin/Debug/
-AppGui/AppGui/obj/Debug/
-speechModality/.vs/
-speechModality/speechModality/obj/Debug/
-
 # End of https://www.gitignore.io/api/csharp
+
+# User ignore
+./AppGui/.vs/
+./AppGui/AppGui/bin/Debug/
+./AppGui/AppGui/obj/Debug/
+./speechModality/.vs/
+./speechModality/speechModality/obj/Debug/
