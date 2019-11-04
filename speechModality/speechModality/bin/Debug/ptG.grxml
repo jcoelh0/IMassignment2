@@ -25,6 +25,9 @@
     <item repeat="0-1">
       Uber Eats Procura<tag>out="KEY"</tag>
     </item>
+    <item repeat="0-1">
+      Uber Eats Sair<tag>out="EXIT"</tag>
+    </item>
   </rule>
   <rule id="actions">
     <one-of>
