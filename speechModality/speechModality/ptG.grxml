@@ -18,6 +18,10 @@
         <ruleref uri="#places"/>
         <tag>out.place=rules.latest();</tag>
       </item>
+      <item>
+        <ruleref uri="#options"/>
+        <tag>out.place=rules.latest();</tag>
+      </item>
       
     </item>
   </rule>
@@ -61,8 +65,19 @@
         Fórum Aveiro<tag>out="forum"</tag>
       </item>
       <item repeat="0-1">
-        Glicínias<tag>out="forum"</tag>
+        Glicínias<tag>out="glicinias"</tag>
       </item>
 	  </one-of>
 	</rule>
+  <rule id="options" repeat="0-1">
+    <one-of>
+      <item>Novidades<tag>out="novidades"</tag></item>
+      <item>Ofertas Especiais</item>
+      <item>McMenus</item>
+      <item>Sobremesas</item>
+      <item>Happy Meal</item>
+      <item>Bebidas</item>
+      <item>Itens Individuais</item>
+    </one-of>
+  </rule>
 </grammar>
