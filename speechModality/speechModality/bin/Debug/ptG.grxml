@@ -44,7 +44,9 @@
   </rule>
 	<rule id="restaurants">
 	  <one-of>
-		<item>McDonald's<tag>out="MCDONALDS"</tag></item>
+		  <item repeat="0-1">
+        McDonald's<tag>out="MCDONALDS"</tag>
+      </item>
       <item repeat="0-1">
         100 montaditos<tag>out="MONTADITOS"</tag>
       </item>
