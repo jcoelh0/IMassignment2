@@ -18,10 +18,6 @@
         <ruleref uri="#places"/>
         <tag>out.place=rules.latest();</tag>
       </item>
-      <item>
-        <ruleref uri="#options"/>
-        <tag>out.place=rules.latest();</tag>
-      </item>
       
     </item>
   </rule>
@@ -65,10 +61,11 @@
         Fórum Aveiro<tag>out="forum"</tag>
       </item>
       <item repeat="0-1">
-        Glicínias<tag>out="glicinias"</tag>
+        Glicínias<tag>out="forum"</tag>
       </item>
 	  </one-of>
 	</rule>
+<<<<<<< HEAD
   <rule id="options" repeat="0-1">
     <one-of>
       <item>Novidades<tag>out="novidades"</tag></item>
@@ -294,4 +291,6 @@
       </item>
     </one-of>
   </rule>
+=======
+>>>>>>> parent of 3a167d2... grammar improved
 </grammar>
