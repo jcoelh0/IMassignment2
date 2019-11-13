@@ -67,6 +67,7 @@
 	</rule>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <rule id="options" repeat="0-1">
     <one-of>
       <item>Novidades<tag>out="novidades"</tag></item>
@@ -292,8 +293,4 @@
       </item>
     </one-of>
   </rule>
-=======
->>>>>>> parent of 3a167d2... grammar improved
-=======
->>>>>>> parent of 3a167d2... grammar improved
 </grammar>
