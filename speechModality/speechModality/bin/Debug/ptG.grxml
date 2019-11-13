@@ -18,6 +18,14 @@
         <ruleref uri="#places"/>
         <tag>out.place=rules.latest();</tag>
       </item>
+      <item>
+        <ruleref uri="#options"/>
+        <tag>out.option=rules.latest();</tag>
+      </item>
+      <item>
+        <ruleref uri="#food"/>
+        <tag>out.food=rules.latest();</tag>
+      </item>
       
     </item>
   </rule>
@@ -65,4 +73,229 @@
       </item>
 	  </one-of>
 	</rule>
+  <rule id="options">
+    <one-of>
+      <item repeat="0-1">Novidades<tag>out="novidades"</tag></item>
+      <item repeat="0-1">Ofertas Especiais<tag>out="especiais"</tag></item>
+      <item repeat="0-1">McMenus<tag>out="mcmenus"</tag></item>
+      <item repeat="0-1">Sobremesas<tag>out="sobremesas"</tag></item>
+      <item repeat="0-1">Happy Meal<tag>out="happymeal"</tag></item>
+      <item repeat="0-1">Bebidas<tag>out="bebidasa"</tag></item>
+      <item repeat="0-1">Itens Individuais<tag>out="inddividuais"</tag></item>
+    </one-of>
+  </rule>
+  <rule id="food">
+    <one-of>
+      <item repeat="0-1">
+        Signature Classic<tag>out="signatureclassic"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu Signature Classic<tag>out="menusignatureclassic"</tag>
+      </item>
+      <item repeat="0-1">
+        Signature Queijo Brie<tag>out="signaturequeijobrie"</tag>
+      </item>
+      <item repeat="0-1">
+        McMenu Signature Queijo Brie<tag>out="mcmenusignaturequeijobrie"</tag>
+      </item>
+      <item repeat="0-1">
+        Chicken Delights<tag>out="chickendelights"</tag>
+      </item>
+      <item repeat="0-1">
+        3 McMenus + ShareBox 10 Chicken McNuggets<tag>out="3mcmenussharebox10chickenmcnuggets"</tag>
+      </item>
+      <item repeat="0-1">
+        2 McMenus + McMenu Grande + ShareBox 10 Chicken McNuggets<tag>out="2mcmenusmcmenugrandesharebox10chickenmcnuggets"</tag>
+      </item>
+      <item repeat="0-1">
+        McMenus + 2 McMenu Grande + ShareBox 10 Chicken McNuggets<tag>out="mcmenus2mcmenugrandesharebox10chickenmcnuggets"</tag>
+      </item>
+      <item repeat="0-1">
+        3 McMenu Grande + ShareBox 10 Chicken McNuggets<tag>out="3mcmenugrandesharebox10chickenmcnuggets"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu Signature Classic<tag>out="menusignatureclassic"</tag>
+      </item>
+      <item repeat="0-1">
+        McMenu Signature Queijo Brie<tag>out="mcmenusignaturequeijobrie"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu CBO<tag>out="menucbo"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu Big Tasty<tag>out="menubigtasty"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu McVeggie<tag>out="menumcveggie"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu Big Mac<tag>out="menubigmac"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu Double CheeseBurger<tag>out="menudoublecheeseburger"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu McChicken<tag>out="menumcchicken"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu McRoyal Deluxe<tag>out="menumcroyaldeluxe"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu McRoyal Bacon<tag>out="menumcroyalbacon"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu McRoyal Cheese<tag>out="menumcroyalcheese"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu Filet-o-Fish<tag>out="menufiletofish"</tag>
+      </item>
+      <item repeat="0-1">
+        Menu Chicken McNuggets 6 Unidades<tag>out="menuchickenmcnuggets6unidades"</tag>
+      </item>
+      <item repeat="0-1">
+        McFlurry Maltesers<tag>out="mcflurrymaltesers"</tag>
+      </item>
+      <item repeat="0-1">
+        Sundae Morango<tag>out="sundaemorango"</tag>
+      </item>
+      <item repeat="0-1">
+        Sundae Chocolate<tag>out="sundaechocolate"</tag>
+      </item>
+      <item repeat="0-1">
+        Sundae Caramelo<tag>out="sundaecaramelo"</tag>
+      </item>
+      <item repeat="0-1">
+        McFlurry MnM's<tag>out="mcflurrymms"</tag>
+      </item>
+      <item repeat="0-1">
+        McFlurry Oreo<tag>out="mcflurryoreo"</tag>
+      </item>
+      <item repeat="0-1">
+        McFlurry Snickers<tag>out="mcflurrysnickers"</tag>
+      </item>
+      <item repeat="0-1">
+        McFlurry KitKat<tag>out="mcflurrykitkat"</tag>
+      </item>
+      <item repeat="0-1">
+        Chicken McNuggets<tag>out="chickenmcnuggets"</tag>
+      </item>
+      <item repeat="0-1">
+        Happy Meal Cheeseburger<tag>out="happymealcheeseburger"</tag>
+      </item>
+      <item repeat="0-1">
+        Happy Meal Cheeseburguer Natura<tag>out="happymealcheeseburguernatura"</tag>
+      </item>
+      <item repeat="0-1">
+        Happy Meal Hamburguer<tag>out="happymealhamburguer"</tag>
+      </item>
+      <item repeat="0-1">
+        Happy Meal Hamburguer Natura<tag>out="happymealhamburguernatura"</tag>
+      </item>
+      <item repeat="0-1">
+        Douradinhos<tag>out="douradinhos"</tag>
+      </item>
+      <item repeat="0-1">
+        McWrap Chicken Mayo<tag>out="mcwrapchickenmayo"</tag>
+      </item>
+      <item repeat="0-1">
+        Bebidas Refrescantes<tag>out="bebidasrefrescantes"</tag>
+      </item>
+      <item repeat="0-1">
+        Águas e Sumos<tag>out="aguasesumos"</tag>
+      </item>
+      <item repeat="0-1">
+        ShareBox 10 McNuggets<tag>out="sharebox10mcnuggets"</tag>
+      </item>
+      <item repeat="0-1">
+        ShareBox 20 McNuggets<tag>out="sharebox20mcnuggets"</tag>
+      </item>
+      <item repeat="0-1">
+        Snack McWrap Chicken Cheese<tag>out="snackmcwrapchickencheese"</tag>
+      </item>
+      <item repeat="0-1">
+        Snack McWrap Chicken Mayo<tag>out="snackmcwrapchickenmayo"</tag>
+      </item>
+      <item repeat="0-1">
+        Cheeseburguer<tag>out="cheeseburguer"</tag>
+      </item>
+      <item repeat="0-1">
+        Hamburguer<tag>out="hamburguer"</tag>
+      </item>
+      <item repeat="0-1">
+        Batatas<tag>out="batatas"</tag>
+      </item>
+      <item repeat="0-1">
+        Chicken Country<tag>out="chickencountry"</tag>
+      </item>
+      <item repeat="0-1">
+        Chicken Delights<tag>out="chickendelights"</tag>
+      </item>
+      <item repeat="0-1">
+        Signature Classic<tag>out="signatureclassic"</tag>
+      </item>
+      <item repeat="0-1">
+        Signature Queijo Brie<tag>out="signaturequeijobrie"</tag>
+      </item>
+      <item repeat="0-1">
+        CBO<tag>out="cbo"</tag>
+      </item>
+      <item repeat="0-1">
+        Big Tasty<tag>out="bigtasty"</tag>
+      </item>
+      <item repeat="0-1">
+        McVeggie<tag>out="mcveggie"</tag>
+      </item>
+      <item repeat="0-1">
+        Big Mac<tag>out="bigmac"</tag>
+      </item>
+      <item repeat="0-1">
+        Double Cheeseburger<tag>out="doublecheeseburger"</tag>
+      </item>
+      <item repeat="0-1">
+        McChicken<tag>out="mcchicken"</tag>
+      </item>
+      <item repeat="0-1">
+        McRoyal Deluxe<tag>out="mcroyaldeluxe"</tag>
+      </item>
+      <item repeat="0-1">
+        McRoyal Bacon<tag>out="mcroyalbacon"</tag>
+      </item>
+      <item repeat="0-1">
+        McRoyal Cheese<tag>out="mcroyalcheese"</tag>
+      </item>
+      <item repeat="0-1">
+        Filet-o-Fish<tag>out="filetofish"</tag>
+      </item>
+      <item repeat="0-1">
+        Molho Batatas<tag>out="molhobatatas"</tag>
+      </item>
+      <item repeat="0-1">
+        Molho Maionese e Alho<tag>out="molhomaioneseealho"</tag>
+      </item>
+      <item repeat="0-1">
+        Molho Mostarda<tag>out="molhomostarda"</tag>
+      </item>
+      <item repeat="0-1">
+        Molho Agridoce<tag>out="molhoagridoce"</tag>
+      </item>
+      <item repeat="0-1">
+        Molho Caril<tag>out="molhocaril"</tag>
+      </item>
+      <item repeat="0-1">
+        Molho Barbecue<tag>out="molhobarbecue"</tag>
+      </item>
+      <item repeat="0-1">
+        Abacaxi <tag>out="abacaxi"</tag>
+      </item>
+      <item repeat="0-1">
+        Fatias Maçã<tag>out="fatiasma"</tag>
+      </item>
+      <item repeat="0-1">
+        Cenouras Baby<tag>out="cenourasbaby"</tag>
+      </item>
+      <item repeat="0-1">
+        McDouradinhos<tag>out="mcdouradinhos"</tag>
+      </item>
+    </one-of>
+  </rule>
 </grammar>
