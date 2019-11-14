@@ -82,6 +82,7 @@
     <one-of>
       <item repeat="0-1">
         Fórum<tag>out="FORUM"</tag>
+        <item repeat="0-">Aveiro</item>
       </item>
       <item repeat="0-1">
         Glicínias<tag>out="GLICINIAS"</tag>
