@@ -311,25 +311,28 @@
     </one-of>
   </rule>
   <rule id="modify">
-    <one-of>
-      <item repeat="0-1">
-        sem Bacon<tag>out="bacon"</tag>
-      </item>
-      <item repeat="0-1">
-        sem Alface<tag>out="alface"</tag>
-      </item>
-      <item repeat="0-1">
-        sem Queijo<tag>out="queijo"</tag>
-      </item>
-      <item repeat="0-1">
-        sem Cebola<tag>out="cebola"</tag>
-      </item>
-      <item repeat="0-1">
-        sem Ketchup<tag>out="ketchup"</tag>
-      </item>
-      <item repeat="0-1">
-        sem Molho Grão de Mostarda<tag>out="molhograo"</tag>
-      </item>
-    </one-of>
+    <item repeat="0-1">
+      SEM<tag>out="SEM"</tag>
+      <one-of>
+        <item repeat="0-1">
+          Bacon<tag>out="Bacon"</tag>
+        </item>
+        <item repeat="0-1">
+          Alface<tag>out="Alface"</tag>
+        </item>
+        <item repeat="0-1">
+          Queijo<tag>out="Queijo"</tag>
+        </item>
+        <item repeat="0-1">
+          Cebola<tag>out="Cebola"</tag>
+        </item>
+        <item repeat="0-1">
+          Ketchup<tag>out="Ketchup"</tag>
+        </item>
+        <item repeat="0-1">
+          Molho Grão de Mostarda<tag>out="Molho Grão de Mostarda"</tag>
+        </item>
+      </one-of>
+    </item>
   </rule>
 </grammar>

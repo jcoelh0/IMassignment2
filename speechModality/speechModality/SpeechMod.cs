@@ -54,21 +54,24 @@ namespace speechModality
 
         private void Sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            onRecognized(new SpeechEventArg(){Text = e.Result.Text, Confidence = e.Result.Confidence, Final = true});
-            
-            //SEND
-            // IMPORTANT TO KEEP THE FORMAT {"recognized":["SHAPE","COLOR"]}
-            string json = "{ \"recognized\": [";
-            //json = "\"" + e.Result.Confidence + "\", ";
-            foreach (var resultSemantic in e.Result.Semantics)
+            if (e.Result.Confidence > 0.70)
             {
-                json+= "\"" + resultSemantic.Value.Value +"\", ";
-            }
-            json = json.Substring(0, json.Length - 2);
-            json += "] }";
+                onRecognized(new SpeechEventArg(){Text = e.Result.Text, Confidence = e.Result.Confidence, Final = true});
+            
+                //SEND
+                // IMPORTANT TO KEEP THE FORMAT {"recognized":["SHAPE","COLOR"]}
+                string json = "{ \"recognized\": [";
+                //json = "\"" + e.Result.Confidence + "\", ";
+                foreach (var resultSemantic in e.Result.Semantics)
+                {
+                    json+= "\"" + resultSemantic.Value.Value +"\", ";
+                }
+                json = json.Substring(0, json.Length - 2);
+                json += "] }";
 
-            var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime+"", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration)+"",e.Result.Confidence, json);
-            mmic.Send(exNot);
+                var exNot = lce.ExtensionNotification(e.Result.Audio.StartTime+"", e.Result.Audio.StartTime.Add(e.Result.Audio.Duration)+"",e.Result.Confidence, json);
+                mmic.Send(exNot);
+            }
         }
     }
 }
