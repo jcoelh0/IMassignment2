@@ -23,16 +23,18 @@ namespace AppGui
     {
         private MmiCommunication mmiC;
         private GoogleSearchEngineUsingChrome sel;
-        private static bool orderDone = false;
-        private static bool orderStart = false;
+        private bool orderDone = false;
+        private bool orderStart = false;
         public TimeSpan MyDefaultTimeout { get; private set; }
-        private static Tts t;
-        private static ChromeDriver driver;
+        private Tts t;
+        private ChromeDriver driver;
 
         public MainWindow()
         {
+            t = new Tts();
+
             driver = new ChromeDriver();
-            //t = new Tts();
+            
 
             //t.Speak("2");
 
@@ -47,7 +49,7 @@ namespace AppGui
 
             //t.Speak("4");
             Console.WriteLine("before driver...");
-
+            
             Console.WriteLine("after driver function...");
 
             //t.Speak("coccocosocoasodasdas");
@@ -108,18 +110,20 @@ namespace AppGui
             //t.Speak("boaaaaaaaaas.");
 
             //orderStart = true;
+            //t.Speak("estou aqui");
 
-            
-            if((string)json.recognized[0].ToString() == "KEY") //&& confidence > (decimal)0.75)) {
+            if ((string)json.recognized[0].ToString() == "KEY") //&& confidence > (decimal)0.75)) {
             {
                 orderStart = true;
-                //t.Speak("Olá! O que gostaria de fazer?");
+                t.Speak("Olá! O que gostaria de fazer?");
             }
-            else if((string)json.recognized[0].ToString() != "EXIT")
+            /*else if((string)json.recognized[0].ToString() == "EXIT")
             {
                 orderDone = true;
-                //t.Speak("ok, até breve!");
-            }
+                t.Speak("ok, até breve!");
+                driver.Close();
+                System.Environment.Exit(1);
+            }*/
 
             if (orderStart)
             {
@@ -129,52 +133,197 @@ namespace AppGui
                 {
 
                     case "scroll":
-
+                        scrollSmooth();
                         break;
                     case "search":
 
                         break;
                     case "return":
-                        driver.Navigate().GoToUrl("https://www.ubereats.com/pt-PT/feed/?d=2019-11-02&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkRFVEklMjAtJTIwRGVwYXJ0YW1lbnRvJTIwZGUlMjBFbGVjdHIlQzMlQjNuaWNhJTJDJTIwVGVsZWNvbXVuaWNhJUMzJUE3JUMzJUI1ZXMlMjBlJTIwSW5mb3JtJUMzJUExdGljYSUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMkNoSUpzVjdhcjZxaUl3MFJidHRlelhxZVI3YyUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJnb29nbGVfcGxhY2VzJTIyJTJDJTIybGF0aXR1ZGUlMjIlM0E0MC42MzMxNzMxMDAwMDAwMSUyQyUyMmxvbmdpdHVkZSUyMiUzQS04LjY1OTQ5MzMlN0Q%3D&ps=1&st=1350");
+                        var str = "https://www.ubereats.com/pt-PT/feed/?d=" + DateTime.Now.ToString("yyyy-M-dd") + "&et=870&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkRFVEklMjAtJTIwRGVwYXJ0YW1lbnRvJTIwZGUlMjBFbGVjdHIlQzMlQjNuaWNhJTJDJTIwVGVsZWNvbXVuaWNhJUMzJUE3JUMzJUI1ZXMlMjBlJTIwSW5mb3JtJUMzJUExdGljYSUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMkNoSUpzVjdhcjZxaUl3MFJidHRlelhxZVI3YyUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJnb29nbGVfcGxhY2VzJTIyJTJDJTIybGF0aXR1ZGUlMjIlM0E0MC42MzMxNzMxMDAwMDAwMSUyQyUyMmxvbmdpdHVkZSUyMiUzQS04LjY1OTQ5MzMlN0Q%3D&ps=1&st=840";
+
+                        driver.Navigate().GoToUrl(str);
                         break;
                 }
 
-                switch ((string)json.recognized[2].ToString())
+                switch ((string)json.recognized[2].ToString()) //restaurants
                 {
 
                     case "MCDONALDS":
                         //search mcdonalds
-                        var searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
-                        searchBox.SendKeys("mcdonalds universidade");
-                        searchBox.SendKeys(Keys.Enter);
-                        //pergunta ao user o que quer?
+                        var searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
+                        searchBox.Click();
+                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        for (int i = 0; i < 20; i++)
+                        {
+                            searchBox.SendKeys(Keys.Backspace);
+                        }
+                        searchBox.SendKeys("mcdonalds ");
+
+                        switch ((string)json.recognized[3].ToString()) //place
+                        {
+                            case "UNIVERSIDADE":
+                                searchBox.SendKeys("universidade");
+                                searchBox.SendKeys(Keys.Enter);
+
+                                //t.Speak("Carregue no botão");
+
+                                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
+                                //var txtElement = driver.FindElementsByXPath("[contains(text(), 'Universidade')]");
+                                var item = driver.FindElement(By.CssSelector("div[class='bz c4 bx c0 c3']"));
+                                item.Click();
+                                break;
+                            case "FORUM":
+                                searchBox.SendKeys("fórum");
+                                searchBox.SendKeys(Keys.Enter);
+                                break;
+                            case "GLICINIAS":
+                                searchBox.SendKeys("glicinias");
+                                searchBox.SendKeys(Keys.Enter);
+                                break;
+                            case "":
+                                searchBox.SendKeys(Keys.Enter);
+                                //tts escolha a opção desejada
+                                break;
+                        }
+                        
                         break;
                     case "MONTADITOS":
-
+                        searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
+                        searchBox.Click();
+                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        for (int i = 0; i < 20; i++)
+                        {
+                            searchBox.SendKeys(Keys.Backspace);
+                        }
+                        searchBox.SendKeys("100 montaditos ");
+                        
+                        searchBox.SendKeys(Keys.Enter);
                         break;
                     case "PIZZAHUT":
+                        searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
+                        searchBox.Click();
+                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        for (int i = 0; i < 20; i++)
+                        {
+                            searchBox.SendKeys(Keys.Backspace);
+                        }
+                        searchBox.SendKeys("pizza hut ");
 
+                        switch ((string)json.recognized[3].ToString()) //place
+                        {
+                            case "UNIVERSIDADE":
+                                searchBox.SendKeys("universidade");
+                                break;
+                            case "FORUM":
+                                searchBox.SendKeys("fórum");
+                                break;
+                            case "GLICINIAS":
+                                searchBox.SendKeys("glicinias");
+                                break;
+                        }
+                        searchBox.SendKeys(Keys.Enter);
                         break;
                 }
+                
+                //pergunta ao user o que quer?
 
             }
 
-            /*
-            switch ((string)json.recognized[2].ToString())
+
+            switch ((string)json.recognized[4].ToString()) //options
             {
 
+                case "":
+                    break;
                 case "MCDONALDS":
                     //search mcdonalds
                     //pergunta ao user o que quer?
                     break;
                 case "MONTADITOS":
-                    
+
                     break;
                 case "PIZZAHUT":
 
                     break;
-            }*/
+            }
 
+            switch ((string)json.recognized[5].ToString()) //food on mcdonalds
+            {
+
+                case "":
+                    break;
+                case "Chicken Delights":
+
+                    break;
+                default:
+                    //var txtElement = driver.FindElementsByXPath("[contains(text(), '" + (string)json.recognized[5].ToString() + "')]");
+                    //txtElement.();
+                    break;
+                case "signatureclassic":
+                    var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
+                    item.Click();
+                    t.Speak("Deseja alterar o seu pedido?");
+                    break;
+                case "signaturequeijobrie":
+
+                    break;
+                case "mcmenusignaturequeijobrie":
+
+                    break;
+                case "chickendelights":
+
+                    break;
+            }
+            //driver.findElement(By.id("idOfTheElement")).click();
+            
+                
+                
+                
+                
+                
+                
+
+            switch ((string)json.recognized[6].ToString()) //food on mcdonalds
+            {
+
+                case "":
+                    break;
+                case "bacon":
+                    var item = driver.FindElement(By.CssSelector("input[class='bx d1 b2']"));
+                    item.Click();
+                    
+                    break;
+                default:
+                    //var txtElement = driver.FindElementsByXPath("[contains(text(), '" + (string)json.recognized[5].ToString() + "')]");
+                    //txtElement.();
+                    break;
+                case "alface":
+                    //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
+                    //item.Click();
+                    t.Speak("Deseja alterar o seu pedido?");
+                    break;
+                case "queijo":
+
+                    break;
+                case "cebola":
+
+                    break;
+                case "ketchup":
+
+                    break;
+                case "molhograo":
+
+                    break;
+            }
+        }
+
+        public void scrollSmooth()
+        {
+            for (int i = 0; i < 60; i++)
+            {
+                ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollBy(0,1)", "");
+            }
         }
 
         public static void openUberEatsChrome(ChromeDriver driver)
@@ -189,7 +338,9 @@ namespace AppGui
             /*driver.Navigate().GoToUrl("https://www.ubereats.com/pt-PT/feed/?pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkRFVEklMjAtJTIwRGVwYXJ0YW1lbnRvJTIwZGUlMjBFbGVjdHIlQzMlQjNuaWNhJTJDJTIwVGVsZWNvbXVuaWNhJUMzJUE3JUMzJUI1ZXMlMjBlJTIwSW5mb3JtJUMzJUExdGljYSUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMkNoSUpzVjdhcjZxaUl3MFJidHRlelhxZVI3YyUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJnb29nbGVfcGxhY2VzJTIyJTJDJTIybGF0aXR1ZGUlMjIlM0E0MC42MzMxNzMxMDAwMDAwMSUyQyUyMmxvbmdpdHVkZSUyMiUzQS04LjY1OTQ5MzMlN0Q%3D");
             */
 
-            driver.Navigate().GoToUrl("https://www.ubereats.com/pt-PT/feed/?d=2019-11-02&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkRFVEklMjAtJTIwRGVwYXJ0YW1lbnRvJTIwZGUlMjBFbGVjdHIlQzMlQjNuaWNhJTJDJTIwVGVsZWNvbXVuaWNhJUMzJUE3JUMzJUI1ZXMlMjBlJTIwSW5mb3JtJUMzJUExdGljYSUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMkNoSUpzVjdhcjZxaUl3MFJidHRlelhxZVI3YyUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJnb29nbGVfcGxhY2VzJTIyJTJDJTIybGF0aXR1ZGUlMjIlM0E0MC42MzMxNzMxMDAwMDAwMSUyQyUyMmxvbmdpdHVkZSUyMiUzQS04LjY1OTQ5MzMlN0Q%3D&ps=1&st=1350");
+            var str = "https://www.ubereats.com/pt-PT/feed/?d=" + DateTime.Now.ToString("yyyy-M-dd") + "&et=870&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkRFVEklMjAtJTIwRGVwYXJ0YW1lbnRvJTIwZGUlMjBFbGVjdHIlQzMlQjNuaWNhJTJDJTIwVGVsZWNvbXVuaWNhJUMzJUE3JUMzJUI1ZXMlMjBlJTIwSW5mb3JtJUMzJUExdGljYSUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMkNoSUpzVjdhcjZxaUl3MFJidHRlelhxZVI3YyUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJnb29nbGVfcGxhY2VzJTIyJTJDJTIybGF0aXR1ZGUlMjIlM0E0MC42MzMxNzMxMDAwMDAwMSUyQyUyMmxvbmdpdHVkZSUyMiUzQS04LjY1OTQ5MzMlN0Q%3D&ps=1&st=840";
+
+            driver.Navigate().GoToUrl(str);
 
             // 3. Find the search textbox (by ID) on the homepage
 
@@ -202,7 +353,7 @@ namespace AppGui
 
             //driver.Manage().Window.Minimize();
             //driver.Manage().Window.Maximize();
-            driver.FindElement(By.CssSelector("button[class='ao aq b2']")).Click(); //By.CssSelector("button[class='ao aq b2]'"));
+            //driver.FindElement(By.CssSelector("button[class='ao aq b2']")).Click(); //By.CssSelector("button[class='ao aq b2]'"));
                                                                                     //driver.FindElementByCssSelector("button.ao.aq.b2");
                                                                                     //searchBox.Click();
                                                                                     //searchBox.SendKeys(Keys.Enter);

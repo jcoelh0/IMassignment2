@@ -135,3 +135,4 @@ C:\Users\jcoel\Desktop\IM\IMassignment2\speechModality\speechModality\obj\Debug\
 C:\Users\jcoel\Desktop\IM\IMassignment2\speechModality\speechModality\obj\Debug\speechModality.csproj.CopyComplete
 C:\Users\jcoel\Desktop\IM\IMassignment2\speechModality\speechModality\obj\Debug\speechModality.exe
 C:\Users\jcoel\Desktop\IM\IMassignment2\speechModality\speechModality\obj\Debug\speechModality.pdb
+C:\Users\jcoel\Desktop\IM\IMassignment2\speechModality\speechModality\obj\Debug\speechModality.csprojAssemblyReference.cache

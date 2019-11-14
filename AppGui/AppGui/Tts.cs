@@ -16,13 +16,15 @@ namespace multimodal
     {
         SpeechSynthesizer tts = null;
         static SoundPlayer player = new SoundPlayer();
+        Queue<string> queue = new Queue<string>();
+        bool speaking = false;
 
         /*
          * Text to Speech
          */ 
         public Tts()
         {
-
+            
 
             Console.WriteLine("TTS constructor called");
 
@@ -33,24 +35,25 @@ namespace multimodal
             
             //create speech synthesizer
             tts = new SpeechSynthesizer();
+            
 
 
             // show voices 
             // Initialize a new instance of the SpeechSynthesizer.
-      using (SpeechSynthesizer synth = new SpeechSynthesizer())
-      {
+            using (SpeechSynthesizer synth = new SpeechSynthesizer())
+            {
 
-        // Output information about all of the installed voices. 
-        Console.WriteLine("Installed voices -");
-        foreach (InstalledVoice voice in synth.GetInstalledVoices())
-        {
-          VoiceInfo info = voice.VoiceInfo;
-          string AudioFormats = "";
-          foreach (SpeechAudioFormatInfo fmt in info.SupportedAudioFormats)
-          {
-            AudioFormats += String.Format("{0}\n",
-            fmt.EncodingFormat.ToString());
-          }
+                // Output information about all of the installed voices. 
+                Console.WriteLine("Installed voices -");
+                foreach (InstalledVoice voice in synth.GetInstalledVoices())
+                {
+                  VoiceInfo info = voice.VoiceInfo;
+                  string AudioFormats = "";
+                  foreach (SpeechAudioFormatInfo fmt in info.SupportedAudioFormats)
+                  {
+                    AudioFormats += String.Format("{0}\n",
+                    fmt.EncodingFormat.ToString());
+                  }
 
           Console.WriteLine(" Name:          " + info.Name);
           Console.WriteLine(" Culture:       " + info.Culture);
@@ -103,14 +106,19 @@ namespace multimodal
          */
         public void Speak(string text)
         {
-            while (player.Stream != null) { 
+            queue.Enqueue(text);
+            Console.WriteLine("auqwiqeiweiqwieqw");
+            while (player.Stream != null && speaking)
+            { 
                 Console.WriteLine("Waiting...");
-                }
+            }
             
             //create audio stream with speech
             player.Stream = new System.IO.MemoryStream();
             tts.SetOutputToWaveStream(player.Stream);
-            tts.SpeakAsync(text);
+            speaking = true;
+            tts.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>(tts_SpeakCompleted);
+            tts.SpeakAsync(queue.Peek());
         }
 
         public void Speak(string text, int rate)
@@ -148,8 +156,10 @@ namespace multimodal
             {
                 //play stream
                 player.Stream.Position = 0;
-                player.Play();
+                player.PlaySync();
                 player.Stream = null;  //  NEW 2015
+                queue.Dequeue();
+                //speaking = false;
             }
         }
     }

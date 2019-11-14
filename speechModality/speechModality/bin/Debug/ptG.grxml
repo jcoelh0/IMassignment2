@@ -26,7 +26,10 @@
         <ruleref uri="#food"/>
         <tag>out.food=rules.latest();</tag>
       </item>
-      
+      <item>
+        <ruleref uri="#modify"/>
+        <tag>out.modify=rules.latest();</tag>
+      </item>
     </item>
   </rule>
   <rule id="keyword">
@@ -34,11 +37,23 @@
       Uber Eats Procura<tag>out="KEY"</tag>
     </item>
     <item repeat="0-1">
+      Ola, o que gostaria de fazer<tag>out="none"</tag>
+    </item>
+    <item repeat="0-1">
       Uber Eats Sair<tag>out="EXIT"</tag>
     </item>
   </rule>
   <rule id="actions">
     <one-of>
+      <item repeat="0-1">
+        Faz scroll<tag>out="scroll"</tag>
+      </item>
+      <item repeat="0-1">
+        Voltar<tag>out="return"</tag>
+      </item>
+      <item repeat="0-1">
+        Quero encomendar<tag>out="procura"</tag>
+      </item>
       <item repeat="0-1">
         Quero encomendar<tag>out="action1"</tag>
       </item>
@@ -66,13 +81,17 @@
 	<rule id="places">
     <one-of>
       <item repeat="0-1">
-        Fórum Aveiro<tag>out="forum"</tag>
+        Fórum Aveiro<tag>out="FORUM"</tag>
       </item>
       <item repeat="0-1">
-        Glicínias<tag>out="forum"</tag>
+        Glicínias<tag>out="GLICINIAS"</tag>
+      </item>
+      <item repeat="0-1">
+        Universidade<tag>out="UNIVERSIDADE"</tag>
       </item>
 	  </one-of>
 	</rule>
+
   <rule id="options">
     <one-of>
       <item repeat="0-1">Novidades<tag>out="novidades"</tag></item>
@@ -80,7 +99,7 @@
       <item repeat="0-1">McMenus<tag>out="mcmenus"</tag></item>
       <item repeat="0-1">Sobremesas<tag>out="sobremesas"</tag></item>
       <item repeat="0-1">Happy Meal<tag>out="happymeal"</tag></item>
-      <item repeat="0-1">Bebidas<tag>out="bebidasa"</tag></item>
+      <item repeat="0-1">Bebidas<tag>out="bebidas"</tag></item>
       <item repeat="0-1">Itens Individuais<tag>out="inddividuais"</tag></item>
     </one-of>
   </rule>
@@ -99,7 +118,7 @@
         McMenu Signature Queijo Brie<tag>out="mcmenusignaturequeijobrie"</tag>
       </item>
       <item repeat="0-1">
-        Chicken Delights<tag>out="chickendelights"</tag>
+        Chicken Delights<tag>out="Chicken Delights"</tag>
       </item>
       <item repeat="0-1">
         3 McMenus + ShareBox 10 Chicken McNuggets<tag>out="3mcmenussharebox10chickenmcnuggets"</tag>
@@ -227,12 +246,8 @@
       <item repeat="0-1">
         Chicken Country<tag>out="chickencountry"</tag>
       </item>
-      <item repeat="0-1">
-        Chicken Delights<tag>out="chickendelights"</tag>
-      </item>
-      <item repeat="0-1">
-        Signature Classic<tag>out="signatureclassic"</tag>
-      </item>
+      
+     
       <item repeat="0-1">
         Signature Queijo Brie<tag>out="signaturequeijobrie"</tag>
       </item>
@@ -293,8 +308,27 @@
       <item repeat="0-1">
         Cenouras Baby<tag>out="cenourasbaby"</tag>
       </item>
+    </one-of>
+  </rule>
+  <rule id="modify">
+    <one-of>
       <item repeat="0-1">
-        McDouradinhos<tag>out="mcdouradinhos"</tag>
+        sem Bacon<tag>out="bacon"</tag>
+      </item>
+      <item repeat="0-1">
+        sem Alface<tag>out="alface"</tag>
+      </item>
+      <item repeat="0-1">
+        sem Queijo<tag>out="queijo"</tag>
+      </item>
+      <item repeat="0-1">
+        sem Cebola<tag>out="cebola"</tag>
+      </item>
+      <item repeat="0-1">
+        sem Ketchup<tag>out="ketchup"</tag>
+      </item>
+      <item repeat="0-1">
+        sem Molho Grão de Mostarda<tag>out="molhograo"</tag>
       </item>
     </one-of>
   </rule>
