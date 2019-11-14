@@ -150,36 +150,52 @@ namespace AppGui
 
                     case "MCDONALDS":
                         //search mcdonalds
-                        var searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
-                        searchBox.Click();
-                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        driver.FindElementByXPath("//parent::*[contains(text(), 'Procurar')]").Click();
+                        //searchBox.Click();
+                        //var searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        var searchBox = driver.FindElementByXPath("//input[@placeholder='O que deseja?']");
                         for (int i = 0; i < 20; i++)
                         {
                             searchBox.SendKeys(Keys.Backspace);
                         }
                         searchBox.SendKeys("mcdonalds ");
 
+                        WebDriverWait wait;
+                        string place;
+
                         switch ((string)json.recognized[3].ToString()) //place
                         {
                             case "UNIVERSIDADE":
+                                place = "(Aveiro Universidade)";
                                 searchBox.SendKeys("universidade");
                                 searchBox.SendKeys(Keys.Enter);
 
                                 //t.Speak("Carregue no botão");
 
-                                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                                wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
                                 wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
                                 //var txtElement = driver.FindElementsByXPath("[contains(text(), 'Universidade')]");
-                                var item = driver.FindElement(By.CssSelector("div[class='bz c4 bx c0 c3']"));
-                                item.Click();
+                                //var item = driver.FindElement(By.CssSelector("div[class='bz c4 bx c0 c3']"));
+                                //item.Click();
+                                driver.FindElementByXPath("//div/*[contains(text(), '" + place + "')]").Click();
                                 break;
                             case "FORUM":
+                                place = "(Aveiro Fórum)";
                                 searchBox.SendKeys("fórum");
                                 searchBox.SendKeys(Keys.Enter);
+
+                                wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
+                                driver.FindElementByXPath("//div/*[contains(text(), '" + place + "')]").Click();
                                 break;
                             case "GLICINIAS":
+                                place = "(Aveiro Glicinias)";
                                 searchBox.SendKeys("glicinias");
                                 searchBox.SendKeys(Keys.Enter);
+
+                                wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
+                                driver.FindElementByXPath("//div/*[contains(text(), '" + place + "')]").Click();
                                 break;
                             case "":
                                 searchBox.SendKeys(Keys.Enter);

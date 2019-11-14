@@ -81,7 +81,7 @@
 	<rule id="places">
     <one-of>
       <item repeat="0-1">
-        Fórum Aveiro<tag>out="FORUM"</tag>
+        Fórum<tag>out="FORUM"</tag>
       </item>
       <item repeat="0-1">
         Glicínias<tag>out="GLICINIAS"</tag>
