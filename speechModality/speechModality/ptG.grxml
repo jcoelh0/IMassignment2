@@ -30,6 +30,10 @@
         <ruleref uri="#modify"/>
         <tag>out.modify=rules.latest();</tag>
       </item>
+      <item>
+        <ruleref uri="#confirmation"/>
+        <tag>out.confirmation=rules.latest();</tag>
+      </item>
     </item>
   </rule>
   <rule id="keyword">
@@ -70,6 +74,13 @@
           <item>Consultar</item>
         </one-of>
         carrinho<tag>out="viewcart"</tag>
+      </item>
+      <item repeat="0-1">
+        <one-of>
+          <item>Fecha</item>
+          <item>Esconde</item>
+        </one-of>
+        carrinho<tag>out="closecart"</tag>
       </item>
       <item repeat="0-1">
         Procura<tag>out="search"</tag>
@@ -368,29 +379,49 @@
   </rule>
   <rule id="modify">
     <item repeat="0-1">
-      <item>
-        SEM<tag>out="SEM"</tag>
-      </item>
+      <item>SEM</item>
         <one-of>
-          <item repeat="0-1">
-            Bacon<tag>out="Bacon"</tag>
+          <item>
+            Bacon<tag>out="SEM Bacon"</tag>
           </item>
-          <item repeat="0-1">
-            Alface<tag>out="Alface"</tag>
+          <item>
+            Alface<tag>out="SEM Alface"</tag>
           </item>
-          <item repeat="0-1">
-            Queijo<tag>out="Queijo"</tag>
+          <item>
+            Queijo<tag>out="SEM Queijo"</tag>
           </item>
-          <item repeat="0-1">
-            Cebola<tag>out="Cebola"</tag>
+          <item>
+            Cebola<tag>out="SEM Cebola"</tag>
           </item>
-          <item repeat="0-1">
-            Ketchup<tag>out="Ketchup"</tag>
+          <item>
+            Ketchup<tag>out="SEM Ketchup"</tag>
           </item>
-          <item repeat="0-1">
-            Molho Grão de Mostarda<tag>out="Molho Grão de Mostarda"</tag>
+          <item>
+            Molho Grão de Mostarda<tag>out="SEM Molho Grão de Mostarda"</tag>
           </item>
         </one-of>
     </item>
+  </rule>
+  <rule id="confirmation">
+    <one-of>
+      <item repeat="0-1">
+        Não<tag>out="nao"</tag>
+      </item>
+      <item repeat="0-1">
+        Cancelar<tag>out="nao"</tag>
+      </item>
+      <item repeat="0-1">
+        Não quero sair<tag>out="nao"</tag>
+      </item>
+      <item repeat="0-1">
+        Sim<tag>out="sim"</tag>
+      </item>
+      <item repeat="0-1">
+        Confirmar<tag>out="sim"</tag>
+      </item>
+      <item repeat="0-1">
+        Quero sair<tag>out="sim"</tag>
+      </item>
+    </one-of>
   </rule>
 </grammar>

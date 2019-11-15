@@ -30,7 +30,7 @@ namespace AppGui
         private ChromeDriver driver;
         private string[] commandsNotUnderstand = new string[5];
         private Random rnd = new Random();
-
+        private bool cartClicked = false;
 
         public MainWindow()
         {
@@ -54,7 +54,6 @@ namespace AppGui
             mmiC.Message += MmiC_Message;
             //t.Speak("3");
             mmiC.Start();
-
 
             //t.Speak("4");
             Console.WriteLine("before driver...");
@@ -106,7 +105,7 @@ namespace AppGui
             dynamic json = JsonConvert.DeserializeObject(com);
 
 
-            double confidence = double.Parse(json.recognized[0].ToString(), CultureInfo.InvariantCulture);
+            double confidence = double.Parse(json.recognized[0].ToString());
             
             WebDriverWait wait;
 
@@ -121,15 +120,27 @@ namespace AppGui
             }
             else if ((string)json.recognized[1].ToString() == "EXIT")
             {
-                //orderDone = true;
-                t.Speak("ok, até breve!");
-                driver.Close();
-                System.Environment.Exit(1);
+                t.Speak("Tem a certeza?");
+                switch ((string)json.recognized[7].ToString()) //confimation
+                {
+                    case "":
+                        t.Speak("Não percebi");
+                        break;
+                    case "sim":
+                        t.Speak("Ok, até breve!");
+                        driver.Close();
+                        System.Environment.Exit(1);
+                        break;
+                    case "nao":
+                        break;
+                    default:
+                        break;
+                }
             }
 
             if (orderStart && confidence > 0.65)
             {
-
+                Console.WriteLine(confidence);
                 string action;
                 switch ((string)json.recognized[2].ToString())
                 {
@@ -196,8 +207,16 @@ namespace AppGui
                         break;
 
                     case "viewcart":
-                        driver.FindElementByXPath("//button[@aria-label='checkout']").Click();
+                        //driver.Navigate().Refresh();
+                        cartClicked = !cartClicked;
+                        if (!cartClicked)
+                        {
+                            driver.FindElementByXPath("//button[@aria-label='checkout']").Click();
+                        }
                         t.Speak("Aqui tem o seu carrinho!");
+                        break;
+                    case "closecart":
+                        driver.FindElementByCssSelector("button[class='af eh ei ej ek el em ao aq dt b2']").Click();
                         break;
                     default:
                         break;
@@ -344,20 +363,37 @@ namespace AppGui
                     case "":
                         break;
                     default:
-                        driver.FindElementByXPath("//*[contains(text(), '" + (string)json.recognized[6].ToString() + "')]").Click();
+
+                        var food = (string)json.recognized[6].ToString();
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[contains(text(), '" + food + "')]")));
+
+                        driver.FindElementByXPath("//*[contains(text(), '" + food + "')]").Click();
                         t.Speak("Deseja alterar o seu pedido?");
                         break;
                 }
                 
 
-            IWebElement element;
+                IWebElement element;
 
                 string itemName = "";
                 switch ((string)json.recognized[7].ToString()) //food on mcdonalds
                 {
                     case "":
                         break;
-                    case "Bacon":
+                    default:
+                        itemName = (string)json.recognized[7].ToString();
+
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//*[contains(text(), '" + itemName + "')]")));
+
+                        element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
+                        ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                        System.Threading.Thread.Sleep(500);
+
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        break;
+                    /*case "Bacon":
                         itemName = "SEM Bacon";
 
                         element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
@@ -417,7 +453,7 @@ namespace AppGui
 
                         //var txtElement = driver.FindElementsByXPath("[contains(text(), '" + (string)json.recognized[5].ToString() + "')]");
                         //txtElement.();
-                        break;
+                        break;*/
                 }
 
             }
