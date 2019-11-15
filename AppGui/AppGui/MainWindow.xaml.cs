@@ -23,7 +23,7 @@ namespace AppGui
     public partial class MainWindow : Window
     {
         private MmiCommunication mmiC;
-        private bool orderDone = false;
+        //private bool orderDone = false;
         private bool orderStart = false;
         public TimeSpan MyDefaultTimeout { get; private set; }
         private Tts t;
@@ -105,21 +105,23 @@ namespace AppGui
             var com = doc.Descendants("command").FirstOrDefault().Value;
             dynamic json = JsonConvert.DeserializeObject(com);
 
-            double confidence = double.Parse(json.recognized[0].ToString(), CultureInfo.InvariantCulture);
 
+            double confidence = double.Parse(json.recognized[0].ToString(), CultureInfo.InvariantCulture);
+            
+            WebDriverWait wait;
 
             //Console.WriteLine(json.recognized[2].ToString());
 
 
 
-            if ((string)json.recognized[1].ToString() == "KEY") //&& confidence > (decimal)0.75)) {
+            if ((string)json.recognized[1].ToString() == "KEY" && confidence > 0.75)
             {
                 orderStart = true;
                 t.Speak("Olá! O que gostaria de fazer?");
             }
             else if ((string)json.recognized[1].ToString() == "EXIT")
             {
-                orderDone = true;
+                //orderDone = true;
                 t.Speak("ok, até breve!");
                 driver.Close();
                 System.Environment.Exit(1);
@@ -128,8 +130,7 @@ namespace AppGui
             if (orderStart && confidence > 0.65)
             {
 
-                
-
+                string action;
                 switch ((string)json.recognized[2].ToString())
                 {
 
@@ -144,8 +145,64 @@ namespace AppGui
 
                         driver.Navigate().GoToUrl(str);
                         break;
-                }
 
+                    case "addtocart":
+                        //var numero = driver.FindElementsByXPath("//div[@class='b5 b6 b7 b8 b9 c3 fw bp']"); // Recebe numero de items. driver.FindElement retorna objecto System...
+                        /*var numero = driver.FindElementsByXPath("//descendant::div[@class='al an bo']"); // Recebe numero de items. driver.FindElement retorna objecto System...
+                        action = "Adiciona " + numero + " ao pedido";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "')]").Click();*/
+                        
+                        action = "Adiciona";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "') and contains(text(), 'ao pedido')]").Click();
+
+                        t.Speak("Adicionado ao carrinho com sucesso!");
+
+
+                        break;
+
+                    /*case "removefromcart":
+                        action = "remove";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "') and contains(text(), 'ao pedido')]").Click();
+                        break;*/
+
+                    /** XPATH returna null por algum motivo **/
+                    /*case "reduceitem":
+                        driver.FindElementByXPath("//div[@class='al an bo']/button[1]").Click();
+                        break;
+                    case "increaseitem":
+                        //var test = driver.FindElementByXPath("//div[@class='al an bo']//descendant::button[position()=2]");
+                        //test.Click();
+                        
+                        var test = driver.FindElements(By.CssSelector("button[class='b5 b6 b7 b8 b9 ba az eh fs ft fc al aj fb bf cd an bo ce fu fv']"));
+                        test[1].Click();
+                        break;
+                        */
+
+                    case "changedate":
+                        action = "Entregar agora";
+                        //driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "')]").Click();
+                        driver.FindElement(By.CssSelector("button[class='ao aq bi bj bk ah b2'")).Click();
+                        action = "Agendar para mais tarde";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "')]").Click();
+
+                        // Adicionar switch para opções
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        action = "Definir hora de entrega";
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(text(), '" + action + "')]")));
+                        driver.FindElementByXPath("//button[contains(text(), '" + action + "')]").Click();
+                        driver.Navigate().Refresh();
+
+                        t.Speak("Ok, a data de entrega foi alterada!");
+                        break;
+
+                    case "viewcart":
+                        driver.FindElementByXPath("//button[@aria-label='checkout']").Click();
+                        t.Speak("Aqui tem o seu carrinho!");
+                        break;
+                    default:
+                        break;
+                }
+                
                 switch ((string)json.recognized[3].ToString()) //restaurants
                 {
 
@@ -161,7 +218,6 @@ namespace AppGui
                         }
                         searchBox.SendKeys("mcdonalds ");
 
-                        WebDriverWait wait;
                         string place;
 
                         switch ((string)json.recognized[4].ToString()) //place
@@ -203,31 +259,43 @@ namespace AppGui
                                 //tts escolha a opção desejada
                                 break;
                         }
-
+                        
+                        if ((string)json.recognized[4].ToString() == "")
+                        {
+                            t.Speak("De qual?");
+                        } else
+                        {
+                            t.Speak("Que produto quer adquirir?");
+                        }
+                        
                         break;
                     case "MONTADITOS":
-                        searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
-                        searchBox.Click();
-                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        driver.FindElementByXPath("//parent::*[contains(text(), 'Procurar')]").Click();
+                        searchBox = driver.FindElementByXPath("//input[@placeholder='O que deseja?']");
                         for (int i = 0; i < 20; i++)
                         {
                             searchBox.SendKeys(Keys.Backspace);
                         }
-                        searchBox.SendKeys("100 montaditos ");
+                        searchBox.SendKeys("100 montaditos ");  
 
                         searchBox.SendKeys(Keys.Enter);
+
+                        place = "100 Montaditos";
+
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
+                        driver.FindElementByXPath("//div/*[contains(text(), '" + place + "')]").Click();
                         break;
                     case "PIZZAHUT":
-                        searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
-                        searchBox.Click();
-                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        driver.FindElementByXPath("//parent::*[contains(text(), 'Procurar')]").Click();
+                        searchBox = driver.FindElementByXPath("//input[@placeholder='O que deseja?']");
                         for (int i = 0; i < 20; i++)
                         {
                             searchBox.SendKeys(Keys.Backspace);
                         }
                         searchBox.SendKeys("pizza hut ");
 
-                        switch ((string)json.recognized[4].ToString()) //place
+                        /*switch ((string)json.recognized[4].ToString()) //place
                         {
                             case "UNIVERSIDADE":
                                 searchBox.SendKeys("universidade");
@@ -238,8 +306,15 @@ namespace AppGui
                             case "GLICINIAS":
                                 searchBox.SendKeys("glicinias");
                                 break;
-                        }
+                        }*/
                         searchBox.SendKeys(Keys.Enter);
+
+
+                        place = "Pizza Hut";
+
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
+                        driver.FindElementByXPath("//div/*[contains(text(), '" + place + "')]").Click();
                         break;
                 }
 
@@ -263,37 +338,20 @@ namespace AppGui
 
                         break;
                 }
-
-                string itemName = "";
+                
                 switch ((string)json.recognized[6].ToString()) //food on mcdonalds
                 {
                     case "":
-                        break;
-                    case "Chicken Delights":
-                        itemName = "Chicken Delights";
-                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                        t.Speak("Deseja alterar o seu pedido?");
                         break;
                     default:
                         driver.FindElementByXPath("//*[contains(text(), '" + (string)json.recognized[6].ToString() + "')]").Click();
                         t.Speak("Deseja alterar o seu pedido?");
                         break;
-                    case "signatureclassic":
-                        //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
-                        itemName = "Signature Classic";
-                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                        t.Speak("Deseja alterar o seu pedido?");
-                        break;
                 }
-                //driver.findElement(By.id("idOfTheElement")).click();
 
 
 
-
-
-
-
-
+                string itemName = "";
                 switch ((string)json.recognized[7].ToString()) //food on mcdonalds
                 {
                     case "":
