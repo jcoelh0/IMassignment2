@@ -137,7 +137,7 @@ namespace AppGui
                         scrollSmooth();
                         break;
                     case "search":
-
+                        t.Speak("O que deseja procurar?");
                         break;
                     case "return":
                         var str = "https://www.ubereats.com/pt-PT/feed/?d=" + DateTime.Now.ToString("yyyy-M-dd") + "&et=870&pl=JTdCJTIyYWRkcmVzcyUyMiUzQSUyMkRFVEklMjAtJTIwRGVwYXJ0YW1lbnRvJTIwZGUlMjBFbGVjdHIlQzMlQjNuaWNhJTJDJTIwVGVsZWNvbXVuaWNhJUMzJUE3JUMzJUI1ZXMlMjBlJTIwSW5mb3JtJUMzJUExdGljYSUyMiUyQyUyMnJlZmVyZW5jZSUyMiUzQSUyMkNoSUpzVjdhcjZxaUl3MFJidHRlelhxZVI3YyUyMiUyQyUyMnJlZmVyZW5jZVR5cGUlMjIlM0ElMjJnb29nbGVfcGxhY2VzJTIyJTJDJTIybGF0aXR1ZGUlMjIlM0E0MC42MzMxNzMxMDAwMDAwMSUyQyUyMmxvbmdpdHVkZSUyMiUzQS04LjY1OTQ5MzMlN0Q%3D&ps=1&st=840";
@@ -370,13 +370,13 @@ namespace AppGui
                     break;
             }
             //driver.findElement(By.id("idOfTheElement")).click();
-            
-                
-                
-                
-                
-                
-                
+
+
+
+
+
+
+            IWebElement element;
 
             switch ((string)json.recognized[6].ToString()) //food on mcdonalds
             {
@@ -384,28 +384,58 @@ namespace AppGui
                     break;
                 case "Bacon":
                     itemName = "SEM Bacon";
+
+                    element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
+                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                    System.Threading.Thread.Sleep(500);
+
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
                     break;
                 case "Alface":
                     itemName = "SEM Alface";
+
+                    element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
+                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                    System.Threading.Thread.Sleep(500);
+
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
                     //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
                     //item.Click();
                     break;
                 case "Queijo":
                     itemName = "SEM Queijo";
+
+                    element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
+                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                    System.Threading.Thread.Sleep(500);
+
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
                     break;
                 case "Cebola":
                     itemName = "SEM Cebola";
+
+                    element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
+                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                    System.Threading.Thread.Sleep(500);
+
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
                     break;
                 case "Ketchup":
                     itemName = "SEM Ketchup";
+
+                    element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
+                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                    System.Threading.Thread.Sleep(500);
+
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
                     break;
                 case "Molho Grão de Mostarda":
                     itemName = "Molho Grão de Mostarda";
+
+                    element = driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]");
+                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+                    System.Threading.Thread.Sleep(500);
+
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
                     break;
                 default:

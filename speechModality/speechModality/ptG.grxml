@@ -36,12 +36,19 @@
     <item repeat="0-1">
       Uber Eats<tag>out="KEY"</tag>
     </item>
+    <item repeat="0-1">
+      Uber Eats<tag>out="EXIT"</tag>
+      <one-of>
+        <item>Sair</item>
+        <item>Sai</item>
+        <item>Adeus</item>
+        <item>Tchau</item>
+        <item>Até à próxima</item>
+      </one-of>
+    </item>
   </rule>
   <rule id="actions">
     <one-of>
-      <item repeat="0-1">
-        Sair<tag>out="EXIT"</tag>
-      </item>
       <item repeat="0-1">
         <one-of>
           <item>Muda</item>
