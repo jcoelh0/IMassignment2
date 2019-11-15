@@ -120,8 +120,8 @@ namespace AppGui
             }
             else if ((string)json.recognized[1].ToString() == "EXIT")
             {
-                t.Speak("Tem a certeza?");
-                switch ((string)json.recognized[7].ToString()) //confimation
+                t.Speak("Tem a certeza que deseja sair?");
+                switch ((string)json.recognized[8].ToString()) //confimation
                 {
                     case "":
                         t.Speak("Não percebi");
