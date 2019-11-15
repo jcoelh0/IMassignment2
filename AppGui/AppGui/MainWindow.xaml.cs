@@ -13,6 +13,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using Microsoft.Speech.Synthesis;
 using multimodal;
+using System.Globalization;
 
 namespace AppGui
 {
@@ -22,20 +23,28 @@ namespace AppGui
     public partial class MainWindow : Window
     {
         private MmiCommunication mmiC;
-        private GoogleSearchEngineUsingChrome sel;
         private bool orderDone = false;
         private bool orderStart = false;
         public TimeSpan MyDefaultTimeout { get; private set; }
         private Tts t;
         private ChromeDriver driver;
+        private string[] commandsNotUnderstand = new string[5];
+        private Random rnd = new Random();
+
 
         public MainWindow()
         {
+
+            commandsNotUnderstand[0] = "Desculpe, pode repetir?";
+            commandsNotUnderstand[1] = "Parece que estou a ficar surda, importa-se de repetir?";
+            commandsNotUnderstand[2] = "Pode repetir o que disse?";
+            commandsNotUnderstand[3] = "Não queria ser inconveniente, mas pode repetir?";
+            commandsNotUnderstand[4] = "Não percebi o que disse.";
             t = new Tts();
 
             driver = new ChromeDriver();
             
-
+            
             //t.Speak("2");
 
 
@@ -69,7 +78,7 @@ namespace AppGui
 
             Console.WriteLine(e.Message);
             var doc = XDocument.Parse(e.Message);
-            Console.WriteLine("doc:::::::::::");
+
             Console.WriteLine(doc);
 
             //foreach(XElement element in doc.Descendants("emma:emma"))
@@ -79,9 +88,9 @@ namespace AppGui
             //Descendant.Element("mmi:mmi").Attribute("emma:confidence").Value;
 
 
-            Console.WriteLine(doc.Root);
+            //Console.WriteLine(doc.Root);
 
-            XNamespace xmlns = "http://www.w3.org/2008/04/mmi-arch";
+            //XNamespace xmlns = "http://www.w3.org/2008/04/mmi-arch";
 
             //string date = doc.Root.Element(xmlns + "emma:interpretation").Attribute("emma:confidence").Value;
 
@@ -96,40 +105,32 @@ namespace AppGui
             var com = doc.Descendants("command").FirstOrDefault().Value;
             dynamic json = JsonConvert.DeserializeObject(com);
 
+            double confidence = double.Parse(json.recognized[0].ToString(), CultureInfo.InvariantCulture);
 
 
-            Console.WriteLine(json.recognized[2].ToString());
+            //Console.WriteLine(json.recognized[2].ToString());
 
 
 
-            //decimal confidence = decimal.Parse(body.Value);
-
-
-            //Console.WriteLine(body);
-            //Console.WriteLine("helllooooo confidence: " + price);
-            //t.Speak("boaaaaaaaaas.");
-
-            //orderStart = true;
-            //t.Speak("estou aqui");
-
-            if ((string)json.recognized[0].ToString() == "KEY") //&& confidence > (decimal)0.75)) {
+            if ((string)json.recognized[1].ToString() == "KEY") //&& confidence > (decimal)0.75)) {
             {
                 orderStart = true;
                 t.Speak("Olá! O que gostaria de fazer?");
             }
-            /*else if((string)json.recognized[0].ToString() == "EXIT")
+            else if ((string)json.recognized[1].ToString() == "EXIT")
             {
                 orderDone = true;
                 t.Speak("ok, até breve!");
                 driver.Close();
                 System.Environment.Exit(1);
-            }*/
+            }
 
-            if (orderStart)
+            if (orderStart && confidence > 0.65)
             {
 
-                //var searchBox = driver.FindElement(By.CssSelector("#search-suggestions-input"));
-                switch ((string)json.recognized[1].ToString())
+                
+
+                switch ((string)json.recognized[2].ToString())
                 {
 
                     case "scroll":
@@ -145,7 +146,7 @@ namespace AppGui
                         break;
                 }
 
-                switch ((string)json.recognized[2].ToString()) //restaurants
+                switch ((string)json.recognized[3].ToString()) //restaurants
                 {
 
                     case "MCDONALDS":
@@ -163,7 +164,7 @@ namespace AppGui
                         WebDriverWait wait;
                         string place;
 
-                        switch ((string)json.recognized[3].ToString()) //place
+                        switch ((string)json.recognized[4].ToString()) //place
                         {
                             case "UNIVERSIDADE":
                                 place = "(Aveiro Universidade)";
@@ -202,7 +203,7 @@ namespace AppGui
                                 //tts escolha a opção desejada
                                 break;
                         }
-                        
+
                         break;
                     case "MONTADITOS":
                         searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
@@ -213,7 +214,7 @@ namespace AppGui
                             searchBox.SendKeys(Keys.Backspace);
                         }
                         searchBox.SendKeys("100 montaditos ");
-                        
+
                         searchBox.SendKeys(Keys.Enter);
                         break;
                     case "PIZZAHUT":
@@ -226,7 +227,7 @@ namespace AppGui
                         }
                         searchBox.SendKeys("pizza hut ");
 
-                        switch ((string)json.recognized[3].ToString()) //place
+                        switch ((string)json.recognized[4].ToString()) //place
                         {
                             case "UNIVERSIDADE":
                                 searchBox.SendKeys("universidade");
@@ -241,109 +242,109 @@ namespace AppGui
                         searchBox.SendKeys(Keys.Enter);
                         break;
                 }
-                
+
                 //pergunta ao user o que quer?
 
+
+
+                switch ((string)json.recognized[5].ToString()) //options
+                {
+
+                    case "":
+                        break;
+                    case ".":
+                        //search mcdonalds
+                        //pergunta ao user o que quer?
+                        break;
+                    case "-":
+
+                        break;
+                    case "-.":
+
+                        break;
+                }
+
+                string itemName = "";
+                switch ((string)json.recognized[6].ToString()) //food on mcdonalds
+                {
+                    case "":
+                        break;
+                    case "Chicken Delights":
+                        itemName = "Chicken Delights";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        t.Speak("Deseja alterar o seu pedido?");
+                        break;
+                    default:
+                        driver.FindElementByXPath("//*[contains(text(), '" + (string)json.recognized[6].ToString() + "')]").Click();
+                        t.Speak("Deseja alterar o seu pedido?");
+                        break;
+                    case "signatureclassic":
+                        //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
+                        itemName = "Signature Classic";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        t.Speak("Deseja alterar o seu pedido?");
+                        break;
+                }
+                //driver.findElement(By.id("idOfTheElement")).click();
+
+
+
+
+
+
+
+
+                switch ((string)json.recognized[7].ToString()) //food on mcdonalds
+                {
+                    case "":
+                        break;
+                    case "Bacon":
+                        itemName = "SEM Bacon";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        break;
+                    case "Alface":
+                        itemName = "SEM Alface";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
+                        //item.Click();
+                        break;
+                    case "Queijo":
+                        itemName = "SEM Queijo";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        break;
+                    case "Cebola":
+                        itemName = "SEM Cebola";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        break;
+                    case "Ketchup":
+                        itemName = "SEM Ketchup";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        break;
+                    case "Molho Grão de Mostarda":
+                        itemName = "Molho Grão de Mostarda";
+                        driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
+                        break;
+                    default:
+
+                        //var txtElement = driver.FindElementsByXPath("[contains(text(), '" + (string)json.recognized[5].ToString() + "')]");
+                        //txtElement.();
+                        break;
+                }
+
             }
-
-
-            switch ((string)json.recognized[4].ToString()) //options
+            /*else if(confidence< 0.75 && confidence> 0.6)
             {
-
-                case "":
-                    break;
-                case "MCDONALDS":
-                    //search mcdonalds
-                    //pergunta ao user o que quer?
-                    break;
-                case "MONTADITOS":
-
-                    break;
-                case "PIZZAHUT":
-
-                    break;
-            }
-
-            string itemName = "";
-            switch ((string)json.recognized[5].ToString()) //food on mcdonalds
+                t.Speak("Pode");
+            }*/
+            else if(confidence< 0.65)
             {
-                case "":
-                    break;
-                case "Chicken Delights":
-                    itemName = "Chicken Delights";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    t.Speak("Deseja alterar o seu pedido?");
-                    break;
-                default:
-                    //var txtElement = driver.FindElementsByXPath("[contains(text(), '" + (string)json.recognized[5].ToString() + "')]");
-                    //txtElement.();
-                    break;
-                case "signatureclassic":
-                    //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
-                    itemName = "Signature Classic";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    t.Speak("Deseja alterar o seu pedido?");
-                    break;
-                case "signaturequeijobrie":
-
-                    break;
-                case "mcmenusignaturequeijobrie":
-
-                    break;
-                case "chickendelights":
-
-                    break;
-            }
-            //driver.findElement(By.id("idOfTheElement")).click();
-            
-                
-                
-                
-                
-                
-                
-
-            switch ((string)json.recognized[6].ToString()) //food on mcdonalds
-            {
-                case "":
-                    break;
-                case "Bacon":
-                    itemName = "SEM Bacon";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    break;
-                case "Alface":
-                    itemName = "SEM Alface";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
-                    //item.Click();
-                    break;
-                case "Queijo":
-                    itemName = "SEM Queijo";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    break;
-                case "Cebola":
-                    itemName = "SEM Cebola";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    break;
-                case "Ketchup":
-                    itemName = "SEM Ketchup";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    break;
-                case "Molho Grão de Mostarda":
-                    itemName = "Molho Grão de Mostarda";
-                    driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    break;
-                default:
-                    
-                    //var txtElement = driver.FindElementsByXPath("[contains(text(), '" + (string)json.recognized[5].ToString() + "')]");
-                    //txtElement.();
-                    break;
+                t.Speak(commandsNotUnderstand[rnd.Next(0, 5)]);
             }
         }
 
         public void scrollSmooth()
         {
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollBy(0,1)", "");
             }
