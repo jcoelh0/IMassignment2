@@ -30,7 +30,7 @@ namespace AppGui
         private ChromeDriver driver;
         private string[] commandsNotUnderstand = new string[5];
         private Random rnd = new Random();
-        private bool cartClicked = false;
+        private bool cartClicked = false, leaving = false;
 
         public MainWindow()
         {
@@ -112,7 +112,6 @@ namespace AppGui
             //Console.WriteLine(json.recognized[2].ToString());
 
 
-
             if ((string)json.recognized[1].ToString() == "KEY" && confidence > 0.75)
             {
                 orderStart = true;
@@ -121,10 +120,15 @@ namespace AppGui
             else if ((string)json.recognized[1].ToString() == "EXIT")
             {
                 t.Speak("Tem a certeza que deseja sair?");
-                switch ((string)json.recognized[8].ToString()) //confimation
+                leaving = true;
+            }
+
+            if (leaving == true && confidence > 0.75)
+            {
+                var confirmation = (string)json.recognized[8].ToString();
+                switch (confirmation) //confimation
                 {
                     case "":
-                        t.Speak("Não percebi");
                         break;
                     case "sim":
                         t.Speak("Ok, até breve!");
@@ -132,10 +136,12 @@ namespace AppGui
                         System.Environment.Exit(1);
                         break;
                     case "nao":
+                        leaving = false;
                         break;
                     default:
+                        t.Speak("Não percebi");
                         break;
-                }
+                }            
             }
 
             if (orderStart && confidence > 0.65)
