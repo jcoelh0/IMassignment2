@@ -96,7 +96,7 @@ namespace AppGui
             var com = doc.Descendants("command").FirstOrDefault().Value;
             dynamic json = JsonConvert.DeserializeObject(com);
 
-
+            WebDriverWait wait;
 
             Console.WriteLine(json.recognized[2].ToString());
 
@@ -154,6 +154,8 @@ namespace AppGui
                         action = "Adiciona";
                         driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "') and contains(text(), 'ao pedido')]").Click();
 
+                        t.Speak("Adicionado ao carrinho com sucesso!");
+
 
                         break;
 
@@ -161,13 +163,43 @@ namespace AppGui
                         action = "remove";
                         driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "') and contains(text(), 'ao pedido')]").Click();
                         break;*/
+
+                    /** XPATH returna null por algum motivo **/
                     /*case "reduceitem":
                         driver.FindElementByXPath("//div[@class='al an bo']/button[1]").Click();
                         break;
                     case "increaseitem":
-                        var test = driver.FindElementByXPath("//div[@class='al an bo']//descendant::button[position()=2]");
-                        test.Click();
-                        break;*/
+                        //var test = driver.FindElementByXPath("//div[@class='al an bo']//descendant::button[position()=2]");
+                        //test.Click();
+                        
+                        var test = driver.FindElements(By.CssSelector("button[class='b5 b6 b7 b8 b9 ba az eh fs ft fc al aj fb bf cd an bo ce fu fv']"));
+                        test[1].Click();
+                        break;
+                        */
+
+                    case "changedate":
+                        action = "Entregar agora";
+                        //driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "')]").Click();
+                        driver.FindElement(By.CssSelector("button[class='ao aq bi bj bk ah b2'")).Click();
+                        action = "Agendar para mais tarde";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "')]").Click();
+
+                        // Adicionar switch para opções
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        action = "Definir hora de entrega";
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(text(), '" + action + "')]")));
+                        driver.FindElementByXPath("//button[contains(text(), '" + action + "')]").Click();
+                        driver.Navigate().Refresh();
+
+                        t.Speak("Ok, a data de entrega foi alterada!");
+                        break;
+
+                    case "viewcart":
+                        driver.FindElementByXPath("//button[@aria-label='checkout']").Click();
+                        t.Speak("Aqui tem o seu carrinho!");
+                        break;
+                    default:
+                        break;
                 }
 
 
@@ -186,7 +218,6 @@ namespace AppGui
                         }
                         searchBox.SendKeys("mcdonalds ");
 
-                        WebDriverWait wait;
                         string place;
 
                         switch ((string)json.recognized[3].ToString()) //place
@@ -228,7 +259,15 @@ namespace AppGui
                                 //tts escolha a opção desejada
                                 break;
                         }
-                        
+
+                        if ((string)json.recognized[3].ToString() == "")
+                        {
+                            t.Speak("De qual?");
+                        } else
+                        {
+                            t.Speak("Que produto quer adquirir?");
+                        }
+
                         break;
                     case "MONTADITOS":
                         driver.FindElementByXPath("//parent::*[contains(text(), 'Procurar')]").Click();
@@ -308,7 +347,7 @@ namespace AppGui
                 case "Chicken Delights":
                     itemName = "Chicken Delights";
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    t.Speak("Deseja alterar o seu pedido?");
+                    t.Speak("Ok, quer alterar algum detalhe?");
                     break;
                 default:
                     //var txtElement = driver.FindElementsByXPath("[contains(text(), '" + (string)json.recognized[5].ToString() + "')]");
@@ -318,7 +357,7 @@ namespace AppGui
                     //var item = driver.FindElement(By.CssSelector("div[class='ao bn e0 af bg']"));
                     itemName = "Signature Classic";
                     driver.FindElementByXPath("//*[contains(text(), '" + itemName + "')]").Click();
-                    t.Speak("Deseja alterar o seu pedido?");
+                    t.Speak("Ok, quer alterar algum detalhe?");
                     break;
                 case "signaturequeijobrie":
 
