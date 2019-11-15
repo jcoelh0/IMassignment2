@@ -63,6 +63,15 @@
       <item repeat="0-1">
         Apetece-me algo<tag>out="action3"</tag>
       </item>
+      <item repeat="0-1">
+        Adiciona ao pedido<tag>out="addtocart"</tag>
+      </item>
+      <item repeat="0-1">
+        Tira um<tag>out="reduceitem"</tag>
+      </item>
+      <item repeat="0-1">
+        Adiciona um<tag>out="increaseitem"</tag>
+      </item>
     </one-of>
   </rule>
 	<rule id="restaurants">

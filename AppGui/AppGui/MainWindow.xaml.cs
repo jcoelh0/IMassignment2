@@ -129,6 +129,7 @@ namespace AppGui
             {
 
                 //var searchBox = driver.FindElement(By.CssSelector("#search-suggestions-input"));
+                string action;
                 switch ((string)json.recognized[1].ToString())
                 {
 
@@ -143,7 +144,32 @@ namespace AppGui
 
                         driver.Navigate().GoToUrl(str);
                         break;
+
+                    case "addtocart":
+                        //var numero = driver.FindElementsByXPath("//div[@class='b5 b6 b7 b8 b9 c3 fw bp']"); // Recebe numero de items. driver.FindElement retorna objecto System...
+                        /*var numero = driver.FindElementsByXPath("//descendant::div[@class='al an bo']"); // Recebe numero de items. driver.FindElement retorna objecto System...
+                        action = "Adiciona " + numero + " ao pedido";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "')]").Click();*/
+                        
+                        action = "Adiciona";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "') and contains(text(), 'ao pedido')]").Click();
+
+
+                        break;
+
+                    /*case "removefromcart":
+                        action = "remove";
+                        driver.FindElementByXPath("//parent::*[contains(text(), '" + action + "') and contains(text(), 'ao pedido')]").Click();
+                        break;*/
+                    /*case "reduceitem":
+                        driver.FindElementByXPath("//div[@class='al an bo']/button[1]").Click();
+                        break;
+                    case "increaseitem":
+                        var test = driver.FindElementByXPath("//div[@class='al an bo']//descendant::button[position()=2]");
+                        test.Click();
+                        break;*/
                 }
+
 
                 switch ((string)json.recognized[2].ToString()) //restaurants
                 {
@@ -205,28 +231,31 @@ namespace AppGui
                         
                         break;
                     case "MONTADITOS":
-                        searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
-                        searchBox.Click();
-                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        driver.FindElementByXPath("//parent::*[contains(text(), 'Procurar')]").Click();
+                        searchBox = driver.FindElementByXPath("//input[@placeholder='O que deseja?']");
                         for (int i = 0; i < 20; i++)
                         {
                             searchBox.SendKeys(Keys.Backspace);
                         }
-                        searchBox.SendKeys("100 montaditos ");
-                        
+                        searchBox.SendKeys("100 montaditos ");                        
                         searchBox.SendKeys(Keys.Enter);
+
+                        place = "100 Montaditos";
+
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
+                        driver.FindElementByXPath("//div/*[contains(text(), '" + place + "')]").Click();
                         break;
                     case "PIZZAHUT":
-                        searchBox = driver.FindElement(By.CssSelector("div[class='ay at az b0']"));
-                        searchBox.Click();
-                        searchBox = driver.FindElement(By.CssSelector("input[class='bn ct']"));
+                        driver.FindElementByXPath("//parent::*[contains(text(), 'Procurar')]").Click();
+                        searchBox = driver.FindElementByXPath("//input[@placeholder='O que deseja?']");
                         for (int i = 0; i < 20; i++)
                         {
                             searchBox.SendKeys(Keys.Backspace);
                         }
                         searchBox.SendKeys("pizza hut ");
 
-                        switch ((string)json.recognized[3].ToString()) //place
+                        /*switch ((string)json.recognized[3].ToString()) //place
                         {
                             case "UNIVERSIDADE":
                                 searchBox.SendKeys("universidade");
@@ -237,8 +266,15 @@ namespace AppGui
                             case "GLICINIAS":
                                 searchBox.SendKeys("glicinias");
                                 break;
-                        }
+                        }*/
                         searchBox.SendKeys(Keys.Enter);
+
+
+                        place = "Pizza Hut";
+
+                        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+                        wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.CssSelector("div[class='bz c4 bx c0 c3']")));
+                        driver.FindElementByXPath("//div/*[contains(text(), '" + place + "')]").Click();
                         break;
                 }
                 
